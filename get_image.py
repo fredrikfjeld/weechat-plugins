@@ -32,6 +32,10 @@
 # Use the hook_process(_hashtable) to download the image
 # http://dev.weechat.org/post/2012/01/18/URL-transfer-in-API
 
+# History:
+# 2012-06-19, Fredrik
+#	version 0.1: initial
+
 from urllib2 import Request, urlopen, URLError, HTTPError # Used to download the file
 import re # Used to check if the url is a image file
 import datetime # Used to record a timestamp in the log-file
@@ -46,9 +50,9 @@ SCRIPT_LICENSE = "GPL3"
 SCRIPT_DESC    = "Downloads images posted in channels"
 
 settings = {
-	"buffers"	: 'efnet.#testing,freenode.#testing',		# Comma separated list of buffers to look in
-	'directory'	: '/home/fredrik/ircimages/',	# Directory to which the images are downloaded
-	"suffix"	: 'jpg,gif,png', 				# Comma separated list of filetypes to download
+	"buffers"	: 'efnet.#testing,freenode.#testing',	# Comma separated list of buffers to look in
+	'directory'	: '/home/fredrik/ircimages/',			# Directory to which the images are downloaded
+	"suffix"	: 'jpg,gif,png', 						# Comma separated list of filetypes to download
 }
 
 octet = r'(?:2(?:[0-4]\d|5[0-5])|1\d\d|\d{1,2})'
