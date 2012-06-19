@@ -31,7 +31,6 @@
 from urllib2 import Request, urlopen, URLError, HTTPError # Used to download the file
 import re # Used to check if the url is a image file
 import datetime # Used to record a timestamp in the log-file
-from fnmatch import fnmatch
 import os
 import weechat
 w = weechat
