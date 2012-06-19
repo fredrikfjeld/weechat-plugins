@@ -34,7 +34,7 @@
 
 # History:
 # 2012-06-19, Fredrik
-#	version 0.1: initial
+#    version 0.1: initial
 
 from urllib2 import Request, urlopen, URLError, HTTPError # Used to download the file
 import re # Used to check if the url is a image file
@@ -50,9 +50,9 @@ SCRIPT_LICENSE = "GPL3"
 SCRIPT_DESC    = "Downloads images posted in channels"
 
 settings = {
-	"buffers"	: 'efnet.#testing,freenode.#testing',	# Comma separated list of buffers to look in
-	'directory'	: '/home/fredrik/ircimages/',			# Directory to which the images are downloaded
-	"suffix"	: 'jpg,gif,png', 						# Comma separated list of filetypes to download
+    "buffers"   : 'efnet.#testing,freenode.#testing',  # Comma separated list of buffers to look in
+    'directory' : '/home/fredrik/ircimages/',          # Directory to which the images are downloaded
+    "suffix"    : 'jpg,gif,png',                       # Comma separated list of filetypes to download
 }
 
 octet = r'(?:2(?:[0-4]\d|5[0-5])|1\d\d|\d{1,2})'
@@ -67,100 +67,100 @@ now = datetime.datetime.now()
 # Downloads the image
 def download_img(img_url, nick):
                 
-	url_array = img_url.split("/")
-	imgname = url_array[-1]
-	
-	req = Request(img_url)
-	# Open the url
-	try:
-		f = urlopen(req)
-		w.prnt("", "downloading " + img_url)
-		
-		dir = w.config_get_plugin('directory')
-		
-		# Check if there already is exists a log-file
-		if os.path.isfile(dir + "log.csv"):
-			# Figure out the filenumber
-			log_file = open(dir + "log.csv", "r")
-			loglines = log_file.readlines()
-			log_file.close()
-			log_lastline = loglines[-1]
-			log_line_list = log_lastline.split(",")
-			filenumber = (int(log_line_list[0]) + 1)
-			filenumber = '{0:05}'.format(filenumber)
-			filenumber = str(filenumber)
-		else:
-			filenumber = "00001"
-		
-		# Get file extention
-		imgname_list = imgname.split(".")
-		ext = imgname_list[-1]
-		
-		
-		# Open our local file for writing
-		local_file = open(dir + filenumber + "." + ext, "wb")
-		# Write the local file
-		local_file.write(f.read())
-		local_file.close()
-		
-		# Logging
-		timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
-		# Open the download-log
-		log_file = open(dir + "log.csv", "a")
-		# Write to the log-file
-		log_file.write(filenumber + ",\"" + timestamp + "\",\"" + img_url + "\",\"" + nick + "\"\n")
-		log_file.close()
-		
-		return w.WEECHAT_RC_OK
-	
-	# Handle errors
-	except HTTPError, e:
-		w.prnt( "HTTP Error:",e.code , img_url )
-	except URLError, e:
-		w.prnt( "URL Error:",e.reason , img_url )
-	
+    url_array = img_url.split("/")
+    imgname = url_array[-1]
+    
+    req = Request(img_url)
+    # Open the url
+    try:
+        f = urlopen(req)
+        w.prnt("", "downloading " + img_url)
+        
+        dir = w.config_get_plugin('directory')
+        
+        # Check if there already is exists a log-file
+        if os.path.isfile(dir + "log.csv"):
+            # Figure out the filenumber
+            log_file = open(dir + "log.csv", "r")
+            loglines = log_file.readlines()
+            log_file.close()
+            log_lastline = loglines[-1]
+            log_line_list = log_lastline.split(",")
+            filenumber = (int(log_line_list[0]) + 1)
+            filenumber = '{0:05}'.format(filenumber)
+            filenumber = str(filenumber)
+        else:
+            filenumber = "00001"
+        
+        # Get file extention
+        imgname_list = imgname.split(".")
+        ext = imgname_list[-1]
+        
+        
+        # Open our local file for writing
+        local_file = open(dir + filenumber + "." + ext, "wb")
+        # Write the local file
+        local_file.write(f.read())
+        local_file.close()
+        
+        # Logging
+        timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+        # Open the download-log
+        log_file = open(dir + "log.csv", "a")
+        # Write to the log-file
+        log_file.write(filenumber + ",\"" + timestamp + "\",\"" + img_url + "\",\"" + nick + "\"\n")
+        log_file.close()
+        
+        return w.WEECHAT_RC_OK
+    
+    # Handle errors
+    except HTTPError, e:
+        w.prnt( "HTTP Error:",e.code , img_url )
+    except URLError, e:
+        w.prnt( "URL Error:",e.reason , img_url )
+    
 
 # Recieves the message with the URL
 def take_url(data, buffer, time, tags, displayed, highlight, prefix, message):
-	global buffer_name, urls, ignore_buffers
-	
-	# Gets the nick of the poster (in an ugly way, I'm sure this can be done more elegant)
-	tags = tags.split(",")
-	nick_tag = tags[2].split("_")
-	nick = nick_tag[1]
-	
-	# Do not trigger on filtered lines and notices
-	if displayed == '0' or prefix == '--':
-		return w.WEECHAT_RC_OK
-	
-	# Checks if the message was recieved from an accepted buffer
-	msg_buffer_name = w.buffer_get_string(buffer, "name")
-	found = False
-	for active_buffer in w.config_get_plugin('buffers').split(','):
-		if active_buffer.lower() == msg_buffer_name.lower():
-			found = True
-			buffer_name = msg_buffer_name
-			break
+    global buffer_name, urls, ignore_buffers
+    
+    # Gets the nick of the poster (in an ugly way, I'm sure this can be done more elegant)
+    tags = tags.split(",")
+    nick_tag = tags[2].split("_")
+    nick = nick_tag[1]
+    
+    # Do not trigger on filtered lines and notices
+    if displayed == '0' or prefix == '--':
+        return w.WEECHAT_RC_OK
+    
+    # Checks if the message was recieved from an accepted buffer
+    msg_buffer_name = w.buffer_get_string(buffer, "name")
+    found = False
+    for active_buffer in w.config_get_plugin('buffers').split(','):
+        if active_buffer.lower() == msg_buffer_name.lower():
+            found = True
+            buffer_name = msg_buffer_name
+            break
             
-	if not found:
-		w.prnt("", "url found, but not in correct buffer.")
-		return w.WEECHAT_RC_OK
-	
-	for url in urlRe.findall(message):
-		url = url.replace("'", "%27") # Escape the ' char
-		
-		# Checks if the url provided ends with the predefined suffixes
-		filetypes = tuple(w.config_get_plugin('suffix').split(','))
-		if url.endswith(filetypes):
-			download_img(url, nick) # Sends the image url to be downloaded
-		else:
-			return w.WEECHAT_RC_OK
-	
-	return w.WEECHAT_RC_OK
+    if not found:
+        w.prnt("", "url found, but not in correct buffer.")
+        return w.WEECHAT_RC_OK
+    
+    for url in urlRe.findall(message):
+        url = url.replace("'", "%27") # Escape the ' char
+        
+        # Checks if the url provided ends with the predefined suffixes
+        filetypes = tuple(w.config_get_plugin('suffix').split(','))
+        if url.endswith(filetypes):
+            download_img(url, nick) # Sends the image url to be downloaded
+        else:
+            return w.WEECHAT_RC_OK
+    
+    return w.WEECHAT_RC_OK
 
 
 if __name__ == '__main__' and w.register(SCRIPT_NAME, SCRIPT_AUTHOR, SCRIPT_VERSION, SCRIPT_LICENSE, SCRIPT_DESC, '', ''):
-	for option, default_value in settings.iteritems():
-		if not w.config_is_set_plugin(option):
-			w.config_set_plugin(option, default_value)
-	w.hook_print("", "", "://", 1, "take_url", "")
+    for option, default_value in settings.iteritems():
+        if not w.config_is_set_plugin(option):
+            w.config_set_plugin(option, default_value)
+    w.hook_print("", "", "://", 1, "take_url", "")
