@@ -28,6 +28,10 @@
 # "set plugins.var.python.get_image /home/foo/bar/"
 #
 
+# TODO:
+# Use the hook_process(_hashtable) to download the image
+# http://dev.weechat.org/post/2012/01/18/URL-transfer-in-API
+
 from urllib2 import Request, urlopen, URLError, HTTPError # Used to download the file
 import re # Used to check if the url is a image file
 import datetime # Used to record a timestamp in the log-file
