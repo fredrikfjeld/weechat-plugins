@@ -62,8 +62,6 @@ label = r'[0-9a-z][-0-9a-z]*[0-9a-z]?'
 domain = r'%s(?:\.%s)*\.[a-z][-0-9a-z]*[a-z]?' % (label, label)
 urlRe = re.compile(r'(\w+://(?:%s|%s)(?::\d+)?(?:/[^\])>\s]*)?)' % (domain, ipAddr), re.I)
 
-now = datetime.datetime.now()
-
 # Downloads the image
 def download_img(img_url, nick):
                 
@@ -104,6 +102,7 @@ def download_img(img_url, nick):
         local_file.close()
         
         # Logging
+        now = datetime.datetime.now()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
         # Open the download-log
         log_file = open(dir + "log.csv", "a")
